@@ -42,9 +42,7 @@ BEGIN
         -- The assigned vendor hash changes if the assigned vendor count changes **OR** the number of assigned vendor stays the BUT an old vendor was replaced with a new one
         CAST(TO_BASE64(SHA256(assigned_vendor_hash)) AS STRING) AS assigned_vendor_hash,
         assigned_vendors_count,
-        n_schemes,
-        n_schemes_with_time_condition,
-        n_schemes_with_customer_condition,
+        n_schemes
       FROM `dh-logistics-product-ops.pricing.dps_asa_full_config_versions` -- A table created by @Sebastian Lafaurie
       WHERE TRUE
         AND asa_id IN UNNEST(COALESCE(@asa_ids_bqr, [487, 573]))
@@ -78,9 +76,7 @@ BEGIN
         fcv.vendor_group_id,
         CAST(TO_BASE64(SHA256(fcv.assigned_vendor_hash)) AS STRING) AS assigned_vendor_hash,
         fcv.assigned_vendors_count,
-        fcv.n_schemes,
-        fcv.n_schemes_with_time_condition,
-        fcv.n_schemes_with_customer_condition,
+        fcv.n_schemes
         
         -- ASA price config
         ARRAY_TO_STRING(ARRAY_AGG(CAST(apc.asa_price_config_id AS STRING) ORDER BY apc.asa_price_config_id), ", ") AS asa_price_config_id,
@@ -99,7 +95,7 @@ BEGIN
       LEFT JOIN UNNEST(asa_price_config) apc
       INNER JOIN `dh-logistics-product-ops.pricing.asa_overview_asa_and_scheme_versioning_'''|| COALESCE(user, "john_doe") ||'''` ver
         ON fcv.entity_id = ver.entity_id AND fcv.asa_id = ver.asa_id AND fcv.active_from = ver.active_from
-      GROUP BY 1,2,3,4,6,7,8,9,10,11,12,13
+      GROUP BY 1,2,3,4,6,7,8,9,10,11
     )
 
     SELECT 
