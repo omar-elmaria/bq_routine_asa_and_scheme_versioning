@@ -361,7 +361,8 @@ BEGIN
       LEFT JOIN UNNEST(apc.scheme_component_configs.mov_config) mov
       LEFT JOIN UNNEST(mov.surge_mov_row_config) sur
       LEFT JOIN UNNEST(apc.scheme_component_configs.fleet_delay_config) surd
-      LEFT JOIN UNNEST(surd.delay_config) del
+      LEFT JOIN UNNEST(surd.fleet_delay_config) surd2
+      LEFT JOIN UNNEST(surd2._delay_config) del
       INNER JOIN `dh-logistics-product-ops.pricing.asa_overview_asa_and_scheme_versioning_'''|| COALESCE(user, "john_doe") ||'''` ver
         ON fcv.entity_id = ver.entity_id AND fcv.asa_id = ver.asa_id AND fcv.active_from = ver.active_from
       ORDER BY active_to DESC
