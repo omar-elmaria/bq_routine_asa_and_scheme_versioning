@@ -332,9 +332,9 @@ BEGIN
         COALESCE(ttc.travel_time_threshold, 999999) AS travel_time_threshold,
 
         -- Service fee
-        sf.service_fee,
-        COALESCE(sf.min_service_fee, 0) AS min_service_fee,
-        COALESCE(sf.max_service_fee, 999999) AS max_service_fee,
+        apc.scheme_component_configs.service_fee_config.service_fee,
+        COALESCE(apc.scheme_component_configs.service_fee_config.min_service_fee, 0) AS min_service_fee,
+        COALESCE(apc.scheme_component_configs.service_fee_config.max_service_fee, 999999) AS max_service_fee,
 
         -- Basket value deals
         bvd.basket_value_fee,
@@ -357,7 +357,6 @@ BEGIN
       FROM `dh-logistics-product-ops.pricing.dps_asa_full_config_versions` fcv
       LEFT JOIN UNNEST(asa_price_config) apc
       LEFT JOIN UNNEST(apc.scheme_component_configs.travel_time_config) ttc
-      LEFT JOIN UNNEST(apc.scheme_component_configs.service_fee_config) sf
       LEFT JOIN UNNEST(apc.scheme_component_configs.basket_value_config) bvd
       LEFT JOIN UNNEST(apc.scheme_component_configs.mov_config) mov
       LEFT JOIN UNNEST(mov.surge_mov_config) sur
