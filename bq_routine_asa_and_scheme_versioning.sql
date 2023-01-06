@@ -359,7 +359,7 @@ BEGIN
       LEFT JOIN UNNEST(apc.scheme_component_configs.travel_time_config) ttc
       LEFT JOIN UNNEST(apc.scheme_component_configs.basket_value_config) bvd
       LEFT JOIN UNNEST(apc.scheme_component_configs.mov_config) mov
-      LEFT JOIN UNNEST(mov.surge_mov_config) sur
+      LEFT JOIN UNNEST(mov.surge_mov_row_config) sur
       LEFT JOIN UNNEST(apc.scheme_component_configs.fleet_delay_config) surd
       LEFT JOIN UNNEST(surd.delay_config) del
       INNER JOIN `dh-logistics-product-ops.pricing.asa_overview_asa_and_scheme_versioning_'''|| COALESCE(user, "john_doe") ||'''` ver
